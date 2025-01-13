@@ -1,5 +1,5 @@
 import db from "../models/index";
-import CRUDService from "../services/SRUDService";
+import CRUDService from "../services/CRUDService";
 let homePage = async (req, res) => {
   try {
     let data = await db.User.findAll();
@@ -37,9 +37,20 @@ let postCRUD = async (req, res) => {
   return res.send("postCRUD");
 };
 
+let displayCRUD = async (req, res) => {
+  let data = await CRUDService.getAllUsers();
+  console.log("--------------------------------");
+  console.log(data);
+  console.log("--------------------------------");
+  return res.render("displayCRUD.ejs", {
+    dataTable: data,
+  });
+};
+
 module.exports = {
   getHomePage: homePage,
   getAboutPage: aboutPage,
   getCRUD: CRUD,
   postCRUD: postCRUD,
+  displayCRUD: displayCRUD,
 };
