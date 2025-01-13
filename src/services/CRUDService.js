@@ -96,9 +96,29 @@ let updateUserData = async (data) => {
   }
 };
 
+let delUSerById = async (userId) => {
+  try {
+    const rowsDeleted = await db.User.destroy({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (rowsDeleted === 0) {
+      return `User with ID ${userId} not found!`;
+    }
+
+    return `User with ID ${userId} deleted successfully!`;
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    throw error; // Quăng lỗi để xử lý bên ngoài
+  }
+};
+
 module.exports = {
   createNewUser: createNewUser,
   getAllUsers: getAllUsers,
   getInfoUSerById: getInfoUSerById,
   updateUserData: updateUserData,
+  delUSerById: delUSerById,
 };

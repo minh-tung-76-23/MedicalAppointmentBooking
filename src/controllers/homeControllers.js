@@ -75,8 +75,21 @@ let putCRUD = async (req, res) => {
   });
 };
 
-let delCRUD = (req, res) => {
-  return res.send("deleteCRUD");
+let delCRUD = async (req, res) => {
+  let userId = req.query.id;
+  if (userId) {
+    let userData = await CRUDService.delUSerById(userId);
+    if (userData) {
+      let allUser = await CRUDService.getAllUsers();
+      return res.render("displayCRUD.ejs", {
+        dataTable: allUser,
+      });
+    } else {
+      return res.send("User not");
+    }
+  } else {
+    return res.send("User not found");
+  }
 };
 
 module.exports = {
@@ -86,6 +99,6 @@ module.exports = {
   postCRUD: postCRUD,
   displayCRUD: displayCRUD,
   editCRUD: editCRUD,
-  delCRUD: delCRUD,
   putCRUD: putCRUD,
+  delCRUD: delCRUD,
 };
