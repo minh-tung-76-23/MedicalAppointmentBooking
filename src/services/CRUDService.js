@@ -52,7 +52,53 @@ let getAllUsers = () => {
   });
 };
 
+let getInfoUSerById = (userId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let user = await db.User.findOne({ where: { id: userId }, raw: true });
+      if (user) {
+        resolve(user);
+      } else {
+        resolve("User not found!");
+      }
+    } catch (error) {
+      return reject(error);
+    }
+  });
+};
+
+let updateUserData = async (data) => {
+  try {
+    // Tìm user trong cơ sở dữ liệu
+    let user = await db.User.findOne({ where: { id: data.id } });
+
+    if (!user) {
+      return "User not found!";
+    }
+
+    // Cập nhật các trường dữ liệu
+    user.firstName = data.firstName;
+    user.lastName = data.lastName;
+    user.address = data.address;
+    user.phoneNumber = data.phoneNumber;
+    user.gender = data.gender == "1"; // Chuyển đổi trực tiếp thành boolean
+    user.roleId = data.roleId;
+
+    console.log("Updated User Data:", user);
+
+    // Lưu lại trong cơ sở dữ liệu
+    await user.save();
+
+    return "User updated successfully!";
+  } catch (error) {
+    console.error("Error updating user:", error);
+    throw error; // Quăng lỗi để xử lý bên ngoài
+  }
+};
+
 module.exports = {
   createNewUser: createNewUser,
   getAllUsers: getAllUsers,
+  getInfoUSerById: getInfoUSerById,
+  updateUserData: updateUserData,
 };

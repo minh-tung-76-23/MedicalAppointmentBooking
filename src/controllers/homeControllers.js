@@ -1,5 +1,6 @@
 import db from "../models/index";
 import CRUDService from "../services/CRUDService";
+
 let homePage = async (req, res) => {
   try {
     let data = await db.User.findAll();
@@ -47,10 +48,44 @@ let displayCRUD = async (req, res) => {
   });
 };
 
+let editCRUD = async (req, res) => {
+  let userId = req.query.id;
+  if (userId) {
+    let userData = await CRUDService.getInfoUSerById(userId);
+    if (userData) {
+      console.log("-----------");
+      console.log(userData);
+      return res.render("editCRUD.ejs", {
+        dataUser: userData,
+      });
+    } else {
+      return res.send("User not");
+    }
+  } else {
+    return res.send("User not found");
+  }
+};
+
+let putCRUD = async (req, res) => {
+  let data = req.body;
+  await CRUDService.updateUserData(data);
+  let allUser = await CRUDService.getAllUsers();
+  return res.render("displayCRUD.ejs", {
+    dataTable: allUser,
+  });
+};
+
+let delCRUD = (req, res) => {
+  return res.send("deleteCRUD");
+};
+
 module.exports = {
   getHomePage: homePage,
   getAboutPage: aboutPage,
   getCRUD: CRUD,
   postCRUD: postCRUD,
   displayCRUD: displayCRUD,
+  editCRUD: editCRUD,
+  delCRUD: delCRUD,
+  putCRUD: putCRUD,
 };
