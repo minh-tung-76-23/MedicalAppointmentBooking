@@ -33,16 +33,16 @@ let CRUD = (req, res) => {
 };
 
 let postCRUD = async (req, res) => {
-  let mesage = await CRUDService.createNewUser(req.body);
-  console.log(mesage);
-  return res.send("postCRUD");
+  let message = await CRUDService.createNewUser(req.body);
+  console.log(message);
+  let allUser = await CRUDService.getAllUsers();
+  return res.render("displayCRUD.ejs", {
+    dataTable: allUser,
+  });
 };
 
 let displayCRUD = async (req, res) => {
   let data = await CRUDService.getAllUsers();
-  console.log("--------------------------------");
-  console.log(data);
-  console.log("--------------------------------");
   return res.render("displayCRUD.ejs", {
     dataTable: data,
   });
