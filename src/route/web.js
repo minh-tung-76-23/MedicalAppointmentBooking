@@ -18,6 +18,7 @@ let initWebRoutes = (app) => {
   router.get("/del-crud", homeControllers.delCRUD);
 
   router.post("/api/login", userControllers.handleLogin);
+  router.get("/api/get-all-users", userControllers.handleGetAllUsers);
 
   return app.use("/", router);
 };
